@@ -10,9 +10,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-
 func main() {
-    config, err := util.LoadConfig(".")
+	config, err := util.LoadConfig(".")
 
 	if err != nil {
 		log.Fatal("cannot load config", err)
@@ -24,7 +23,11 @@ func main() {
 		log.Fatal("cannot connect to db:", err)
 	}
 	store := db.NewStore(conn)
-	server := api.NewServer(store)
+	server, err := api.NewServer(config, store)
+
+	if err != nil {
+		log.Fatal("Cannot create server")
+	}
 
 	err = server.Start(config.ServerAddress)
 
