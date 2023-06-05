@@ -18,6 +18,8 @@ sqli:
 sqlg:		
 	docker run --rm -v "${CURDIR}:/src" -w /src kjconroy/sqlc generate
 
+mock:
+	mockgen --build_flags=--mod=mod -package=mockdb    -destination db/mock/store.go bank-api/db/sqlc Store
 
 test:
 	go test -v -cover ./...
@@ -25,4 +27,4 @@ test:
 server:
 	go run main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqli sqlg
+.PHONY: postgres createdb dropdb migrateup migratedown sqli sqlg mock
